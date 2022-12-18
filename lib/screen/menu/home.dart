@@ -26,9 +26,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    ListData = ikann.dataikan(); 
+    ListData = ikann.dataikan();
   }
 
   @override

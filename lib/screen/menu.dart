@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pelelangan/screen/ikan/tambah_ikan.dart';
 import 'package:pelelangan/screen/menu/akun.dart';
 import 'package:pelelangan/screen/menu/home.dart';
 import 'package:pelelangan/screen/menu/jadwal.dart';
@@ -24,10 +25,13 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     final _Listpage = [
       Home(),
-      Lelang(),
-      Riwayat(),
-      Jadwal(),
-      Akun(),
+      Home(),
+      TambahIkan(),
+      Home(),
+      // Lelang(),
+      // Riwayat(),
+      // Jadwal(),
+      // Akun(),
     ];
 
     return Scaffold(
@@ -47,12 +51,8 @@ class _MenuState extends State<Menu> {
             label: ('Lelang'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: ('Riwayat'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timelapse),
-            label: ('Jadwal'),
+            icon: Icon(Icons.add_business_outlined),
+            label: ('Tambah Ikan'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

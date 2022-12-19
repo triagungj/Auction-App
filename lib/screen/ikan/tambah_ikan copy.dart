@@ -43,7 +43,7 @@ class _TambahIkanState extends State<TambahIkan> {
     try {
       var stream = http.ByteStream(DelegatingStream.typed(image!.openRead()));
       var lenght = await image!.length();
-      var url = Uri.http(apiPath, '/lelang/api/lealng_ikan/tambah_ikan.php');
+      var url = Uri.http(apiPath, '/lelang/api/ikan/tambah_ikan.php');
       var request = http.MultipartRequest("POST", url);
       var multipartFile = http.MultipartFile(
         "image",
@@ -70,6 +70,25 @@ class _TambahIkanState extends State<TambahIkan> {
           Navigator.pop(context);
           print(message);
         }
+        //     var data = jsonDecode(value);
+        //     if (data.toString() == "Berhasil") {
+        //       Get.snackbar(
+        //         "Berhasil Menambah Ikan",
+        //         '',
+        //         backgroundColor: Colors.blue,
+        //         colorText: Colors.white,
+        //         snackPosition: SnackPosition.TOP,
+        //       );
+        //       Navigator.of(context).pushNamed('/Menu');
+        //     } else if (data.toString() == "Gagal") {
+        //       Get.snackbar(
+        //         "Gagal",
+        //         'silahkan Isi kembali',
+        //         backgroundColor: Colors.red,
+        //         colorText: Colors.white,
+        //         snackPosition: SnackPosition.TOP,
+        //       );
+        //     }
       });
     } catch (e) {
       debugPrint("Error $e");
@@ -87,7 +106,7 @@ class _TambahIkanState extends State<TambahIkan> {
             child: ListView(
               children: [
                 Text(
-                  'Masukan Detail Ikan',
+                  'Masukan Informasi Ikan',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 30.0, color: Colors.blue),
                 ),

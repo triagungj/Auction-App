@@ -1,62 +1,30 @@
-class Ikan {
-  final String id_ikan;
+class Lelang {
+  final String no_lelang;
   final String nama_ikan;
   final String berat;
   final int harga;
   final String tanggal;
-  final String cover;
+  final String gambar;
   final String keterangan;
 
-  const Ikan({
-    required this.id_ikan,
+  const Lelang({
+    required this.no_lelang,
     required this.nama_ikan,
     required this.berat,
     required this.harga,
     required this.tanggal,
-    required this.cover,
+    required this.gambar,
     required this.keterangan,
   });
 
-  factory Ikan.fromJson(Map<String, dynamic> json) {
-    return Ikan(
-      id_ikan: json['id_ikan'],
+  factory Lelang.fromJson(Map<String, dynamic> json) {
+    return Lelang(
+      no_lelang: json['no_lelang'],
       nama_ikan: json['nama_ikan'],
       berat: json['berat'],
       harga: json['harga'],
       tanggal: json['tanggal'],
-      cover: json['cover'],
-      keterangan: json['keterangan'],
-    );
-  }
-}
-
-class Ikan1 {
-  final String id_ikan;
-  final String nama_ikan;
-  final String berat;
-  final int harga;
-  final String tanggal;
-  final String cover;
-  final String keterangan;
-
-  const Ikan1({
-    required this.id_ikan,
-    required this.nama_ikan,
-    required this.berat,
-    required this.harga,
-    required this.tanggal,
-    required this.cover,
-    required this.keterangan,
-  });
-
-  factory Ikan1.fromJson(Map<String, dynamic> json) {
-    return Ikan1(
-      id_ikan: json['id_ikan'],
-      nama_ikan: json['nama_ikan'],
-      berat: json['berat'],
-      harga: json['harga'],
-      tanggal: json['tanggal'],
-      cover: json['cover'],
+      gambar: json['gambar'],
       keterangan: json['keterangan'],
     );
   }

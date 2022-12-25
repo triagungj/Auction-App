@@ -8,6 +8,8 @@ import 'package:pelelangan/screen/menu/login.dart';
 import 'package:pelelangan/screen/menu/riwayat.dart';
 
 class Menu extends StatefulWidget {
+  const Menu({super.key});
+
   @override
   _MenuState createState() => _MenuState();
 }
@@ -25,9 +27,9 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     final _Listpage = [
       Home(),
-      Home(),
+      Riwayat(),
       TambahIkan(),
-      Home(),
+      Akun(),
       // Lelang(),
       // Riwayat(),
       // Jadwal(),
@@ -41,14 +43,15 @@ class _MenuState extends State<Menu> {
         child: _Listpage[_selectedNavbar],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: ('Beranda'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_basket),
-            label: ('Lelang'),
+            icon: Icon(Icons.library_books),
+            label: ('Riwayat'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_business_outlined),

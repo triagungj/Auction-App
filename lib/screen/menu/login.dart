@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:pelelangan/core/key_constant.dart';
@@ -27,7 +28,7 @@ class _LoginState extends State<Login> {
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
   Future<void> login() async {
-    var url = Uri.http(apiPath, '/lelang/api/user/login.php', {'q': '{http}'});
+    var url = Uri.parse('$apiPath/lelang/api/user/login.php');
     // var url = Uri.parse("http:192.168.0.117/lelang/api/user/login.php");
     final response = await http.post(url, body: {
       "username": username.text,
@@ -38,6 +39,7 @@ class _LoginState extends State<Login> {
     if (data['status'] == "Berhasil") {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       User.value = Users.fromJson(data['data']);
+      log(User.value.id_user.toString());
       prefs.setString('id_user', User.value.id_user!);
       Get.snackbar(
         "Login Berhasil",
@@ -46,7 +48,9 @@ class _LoginState extends State<Login> {
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP,
       );
-      Navigator.of(context).pushNamed('/Menu');
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/Menu');
+      }
     } else {
       Get.snackbar(
         "Password Salah",

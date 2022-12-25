@@ -10,9 +10,8 @@ import 'package:pelelangan/model/user.dart';
 
 class LelangService {
   Future<List<Lelang>> listLelang() async {
-    final uri = Uri.http(
-      apiPath,
-      '/lelang/api/lelang_ikan/api_tampil.php',
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/api_tampil.php',
     );
 
     final response = await http.get(uri);
@@ -26,10 +25,8 @@ class LelangService {
   }
 
   Future<Lelang> detailLelang(String id) async {
-    final uri = Uri.http(
-      apiPath,
-      '/lelang/api/lelang_ikan/detail_lelang.php',
-      {'no_lelang': id},
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/detail_lelang.php?no_lelang=$id',
     );
 
     final response = await http.get(uri);

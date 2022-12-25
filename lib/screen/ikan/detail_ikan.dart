@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pelelangan/core/key_constant.dart';
+import 'package:pelelangan/model/currency_format.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:pelelangan/model/service.dart';
 
@@ -28,7 +27,7 @@ class _DetailIkanState extends State<DetailIkan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Data Ikan'),
+        title: const Text('Data Ikan'),
       ),
       body: FutureBuilder(
         future: listdata,
@@ -36,25 +35,90 @@ class _DetailIkanState extends State<DetailIkan> {
           if (snapshot.hasData) {
             Lelang isiData = snapshot.data!;
             return Column(
-              children: <Widget>[
-                ClipRRect(
-                  child: Image.network(
-                    'http://$apiPath/lelang/api/image/${isiData.gambar}',
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        child: Image.network(
+                          '$imagePath/${isiData.gambar}',
+                          height: 120,
+                          width: 120,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${isiData.nama_ikan} (${isiData.berat} KG)',
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Harga',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      CurrencyFormat.convertToIdr(
+                                          isiData.harga, 2),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Tanggal',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      isiData.tanggal,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Keterangan',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  isiData.keterangan,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Text(
-                  isiData.nama_ikan,
-                ),
-                Text(isiData.berat),
-                Text(isiData.harga.toString()),
-                Text(isiData.tanggal),
-                Text(isiData.keterangan),
               ],
             );
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

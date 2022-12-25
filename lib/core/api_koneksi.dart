@@ -1,8 +1,7 @@
 import 'package:pelelangan/core/key_constant.dart';
 
 class API {
-  static const hostConnect = "http://$apiPath/lelang/api";
-  static const koneksiUser = "$hostConnect/user";
+  static const koneksiUser = "$apiPath/user";
 
   //register user
   static const register = "$koneksiUser/user/register.php";

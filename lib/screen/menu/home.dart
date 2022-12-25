@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:pelelangan/core/key_constant.dart';
+import 'package:pelelangan/model/currency_format.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:pelelangan/model/service.dart';
 import 'package:pelelangan/screen/ikan/detail_ikan.dart';
@@ -38,12 +39,6 @@ class _HomeState extends State<Home> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => DetailIkan(noLelang: isiData[index].lelang),
-                        //   ),
-                        // );
                         Navigator.of(context).pushNamed(
                           '/DetailIkan',
                           arguments: isiData[index].no_lelang,
@@ -51,8 +46,8 @@ class _HomeState extends State<Home> {
                       },
                       child: Card(
                         elevation: 0,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 6),
                         child: Container(
                           padding: EdgeInsets.all(8),
                           child: Row(
@@ -60,41 +55,29 @@ class _HomeState extends State<Home> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                width: 50,
-                                height: 50,
+                                width: 80,
+                                height: 80,
                                 child: Image.network(
-                                  'http://$apiPath/lelang/api/image/${isiData[index].gambar}',
+                                  '$imagePath/${isiData[index].gambar}',
                                   fit: BoxFit.fill,
                                 ),
                               ),
                               Expanded(
                                   child: Container(
-                                padding: EdgeInsets.only(bottom: 8),
+                                padding: EdgeInsets.only(bottom: 8, left: 10),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 8, right: 8),
-                                      child: Text(
-                                        isiData[index].nama_ikan,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                    Text(
+                                      '${isiData[index].nama_ikan} (${isiData[index].berat} kg)',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 8, right: 8),
-                                      child: Text(
-                                        '${isiData[index].berat} kg',
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 18, 167, 5)),
-                                      ),
-
-                                      //   ),,),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Harga Awal: ${CurrencyFormat.convertToIdr(isiData[index].harga, 2)}',
                                     ),
                                   ],
                                 ),

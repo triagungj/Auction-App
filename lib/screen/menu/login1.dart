@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
     });
 
     var data = jsonDecode(response.body);
-    if (data['status'] == "User") {
+    if (data['status'] == "Berhasil") {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       User.value = Users.fromJson(data['data']);
       log(User.value.id_user.toString());
@@ -50,21 +50,6 @@ class _LoginState extends State<Login> {
       );
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/Menu');
-      }
-    } else if (data['status'] == "Admin") {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      User.value = Users.fromJson(data['data']);
-      log(User.value.id.toString());
-      prefs.setString('id', User.value.id!);
-      Get.snackbar(
-        "Login Berhasil",
-        'Selamat Datang',
-        backgroundColor: Colors.blue,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.TOP,
-      );
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/home');
       }
     } else {
       Get.snackbar(

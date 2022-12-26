@@ -43,7 +43,7 @@ class _TambahIkanState extends State<TambahIkan> {
     try {
       var stream = http.ByteStream(DelegatingStream.typed(image!.openRead()));
       var lenght = await image!.length();
-      var url = Uri.http(apiPath, '/lelang/api/lealng_ikan/tambah_ikan.php');
+      var url = Uri.http(apiPath, '/lelang/api/lelang_ikan/tambah_ikan.php');
       var request = http.MultipartRequest("POST", url);
       var multipartFile = http.MultipartFile(
         "image",

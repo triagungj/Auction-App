@@ -21,7 +21,7 @@ class _AkunState extends State<Akun> {
   Future<Users> fetchAkun() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getString(keyIdUserPref);
-    var url = Uri.parse('$apiPath/lelang/api/user/akun.php?id_user=$id');
+    var url = Uri.parse('$apiPath/lelang/api/user/akun.php?id_user=$id!');
     final response = await http.get(url);
     final body = jsonDecode(response.body);
     print(body);

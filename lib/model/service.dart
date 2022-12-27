@@ -1,17 +1,30 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:get/get.dart';
 import 'package:pelelangan/core/key_constant.dart';
-import 'package:pelelangan/model/class_user.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:http/http.dart' as http;
 import 'package:pelelangan/model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LelangService {
   Future<List<Lelang>> listLelang() async {
     final uri = Uri.parse(
       '$apiPath/lelang/api/lelang_ikan/api_tampil.php',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((e) => Lelang.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<Lelang>> listLelangku(String? idUser) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/list_lelangku.php?id_user=${idUser ?? ''}',
     );
 
     final response = await http.get(uri);
@@ -40,7 +53,37 @@ class LelangService {
   }
 }
 
-class Control extends GetxController {
-  var listAkun = <Users>[].obs;
-  var User = Users().obs;
+class AkunService {
+  Future<bool> getLogin(String username, String password) async {
+    var url = Uri.parse('$apiPath/lelang/api/user/login.php');
+    final response = await http.post(url, body: {
+      "username": username,
+      "password": password,
+    });
+
+    var data = jsonDecode(response.body);
+    if (data['status'] == "User" || data['status'] == "Admin") {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (data['status'] == "User") {
+        final user = Users.fromJson(data['data']);
+        prefs.setString(keyIdUserPref, user.id_user!);
+        prefs.setBool(keyIsAdmin, false);
+      } else {
+        prefs.setBool(keyIsAdmin, true);
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<Users> fetchAkun() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getString(keyIdUserPref);
+    var url = Uri.parse('$apiPath/lelang/api/user/akun.php?id_user=$id');
+    final response = await http.get(url);
+    final body = jsonDecode(response.body);
+
+    return Users.fromJson(body);
+  }
 }

@@ -11,11 +11,9 @@ class _JadwalState extends State<Jadwal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Jadwal')),
-      body: Container(
-        child: Center(
-          child: Text("Jadwal"),
-        ),
+      appBar: AppBar(title: const Text('Jadwal')),
+      body: const Center(
+        child: Text("Jadwal"),
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pelelangan/core/api_koneksi.dart';
-import 'package:pelelangan/model/class_user.dart';
 
 class Daftar extends StatefulWidget {
   const Daftar({Key? key}) : super(key: key);
@@ -37,7 +37,9 @@ class _DaftarState extends State<Daftar> {
           // registerAndSaveUserRecord();
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   // registerAndSaveUserRecord() async
@@ -64,128 +66,125 @@ class _DaftarState extends State<Daftar> {
             body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(top: 110, right: 30, left: 30),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // SizedBox(height: 5.0),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Text('DAFTAR AKUN',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 103, 9, 158))),
-                  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // SizedBox(height: 5.0),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 5),
+                  child: Text('DAFTAR AKUN',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 103, 9, 158))),
+                ),
 
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 8.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        hintText: 'Username',
-                        prefixIcon: Icon(Icons.person,
-                            color: Color.fromARGB(255, 103, 9, 158))),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 8.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        hintText: 'Password',
-                        prefixIcon: Icon(Icons.lock,
-                            color: Color.fromARGB(255, 103, 9, 158))),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 10),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 8.0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      hintText: 'Username',
+                      prefixIcon: Icon(Icons.person,
+                          color: Color.fromARGB(255, 103, 9, 158))),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 8.0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      hintText: 'Password',
+                      prefixIcon: Icon(Icons.lock,
+                          color: Color.fromARGB(255, 103, 9, 158))),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 10),
 
-                  TextFormField(
-                    controller: namaController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        hintText: 'Nama',
-                        prefixIcon: Icon(Icons.person,
-                            color: Color.fromARGB(255, 103, 9, 158))),
-                  ),
-                  SizedBox(height: 10),
+                TextFormField(
+                  controller: namaController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      hintText: 'Nama',
+                      prefixIcon: Icon(Icons.person,
+                          color: Color.fromARGB(255, 103, 9, 158))),
+                ),
+                const SizedBox(height: 10),
 
-                  TextFormField(
-                    controller: alamatController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 9, 158),
-                                width: 1.0)),
-                        hintText: 'Alamat',
-                        prefixIcon: Icon(Icons.person,
-                            color: Color.fromARGB(255, 103, 9, 158))),
+                TextFormField(
+                  controller: alamatController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 103, 9, 158),
+                              width: 1.0)),
+                      hintText: 'Alamat',
+                      prefixIcon: Icon(Icons.person,
+                          color: Color.fromARGB(255, 103, 9, 158))),
+                ),
+                const SizedBox(height: 20.0),
+                InkWell(
+                  splashColor: Colors.red,
+                  onTap: () {
+                    if (fromKey.currentState!.validate()) validateUserName();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+                    decoration: BoxDecoration(
+                        gradient: const LinearGradient(colors: [
+                          Color.fromARGB(255, 196, 65, 223),
+                          Color.fromARGB(255, 103, 9, 158)
+                        ]),
+                        borderRadius: BorderRadius.circular(100.0)),
+                    child: const Text('Daftar',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20.0)),
                   ),
-                  SizedBox(height: 20.0),
-                  InkWell(
-                    splashColor: Colors.red,
-                    onTap: () {
-                      if (fromKey.currentState!.validate()) validateUserName();
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Color.fromARGB(255, 196, 65, 223),
-                            Color.fromARGB(255, 103, 9, 158)
-                          ]),
-                          borderRadius: BorderRadius.circular(100.0)),
-                      child: Text('Daftar',
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 20.0)),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Jika Sudah Punya Akun ? '),
-                      SizedBox(width: 5.0),
-                      InkWell(
-                        onTap: () {},
-                        child: Center(
-                          child: Text('Login',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 202, 47, 249))),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text('Jika Sudah Punya Akun ? '),
+                    const SizedBox(width: 5.0),
+                    InkWell(
+                      onTap: () {},
+                      child: const Center(
+                        child: Text('Login',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 202, 47, 249))),
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
           ),
         )));

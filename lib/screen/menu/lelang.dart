@@ -11,11 +11,9 @@ class _LelangState extends State<Lelang> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lelang')),
-      body: Container(
-        child: Center(
-          child: Text("Lelang"),
-        ),
+      appBar: AppBar(title: const Text('Lelang')),
+      body: const Center(
+        child: Text("Lelang"),
       ),
     );
   }

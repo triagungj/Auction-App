@@ -1,17 +1,21 @@
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:pelelangan/screen/ikan/tambah_ikan.dart';
 import 'package:pelelangan/screen/menu/akun.dart';
 import 'package:pelelangan/screen/menu/home.dart';
-import 'package:pelelangan/screen/menu/jadwal.dart';
-import 'package:pelelangan/screen/menu/lelang.dart';
-import 'package:pelelangan/screen/menu/login.dart';
+import 'package:pelelangan/screen/menu/lelangku.dart';
 import 'package:pelelangan/screen/menu/riwayat.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({super.key});
+  const Menu({
+    super.key,
+    required this.isAdmin,
+  });
+
+  final bool isAdmin;
 
   @override
-  _MenuState createState() => _MenuState();
+  State<Menu> createState() => _MenuState();
 }
 
 class _MenuState extends State<Menu> {
@@ -25,22 +29,24 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    final _Listpage = [
+    const _Listpage = [
       Home(),
+      Lelangku(),
       Riwayat(),
-      TambahIkan(),
       Akun(),
-      // Lelang(),
-      // Riwayat(),
-      // Jadwal(),
-      // Akun(),
+    ];
+    const _Adminpage = [
+      Home(),
+      Lelangku(),
+      Riwayat(),
+      Akun(),
     ];
 
     return Scaffold(
       body: Center(
-        // child: Text("Tab Index yang aktif : $_selectedNavbar",
-        //     style: TextStyle(fontSize: 16)),
-        child: _Listpage[_selectedNavbar],
+        child: widget.isAdmin
+            ? _Adminpage[_selectedNavbar]
+            : _Listpage[_selectedNavbar],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -50,12 +56,12 @@ class _MenuState extends State<Menu> {
             label: ('Beranda'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: ('Riwayat'),
+            icon: Icon(Icons.add_business_outlined),
+            label: ('Lelangku'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_business_outlined),
-            label: ('Tambah Ikan'),
+            icon: Icon(Icons.library_books),
+            label: ('Riwayat'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

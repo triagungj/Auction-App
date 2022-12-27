@@ -11,11 +11,9 @@ class _RiwayatState extends State<Riwayat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Riwayat')),
-      body: Container(
-        child: Center(
-          child: Text("Riwayat"),
-        ),
+      appBar: AppBar(title: const Text('Riwayat')),
+      body: const Center(
+        child: Text("Riwayat"),
       ),
     );
   }

@@ -60,12 +60,11 @@ class _LoginState extends State<Login> {
                 style: TextStyle(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 103, 9, 158))),
+                    color: Colors.blue)),
           ),
           const SizedBox(height: 60),
           const Text('Silahkan Masukan Username Dan Password Anda!!!',
-              style: TextStyle(
-                  fontSize: 10.0, color: Color.fromARGB(255, 103, 9, 158))),
+              style: TextStyle(fontSize: 10.0, color: Colors.blue)),
           const SizedBox(height: 12.0),
           TextFormField(
             // validator: (e) {
@@ -77,14 +76,11 @@ class _LoginState extends State<Login> {
             controller: username,
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color.fromARGB(255, 103, 9, 158), width: 1.0)),
+                    borderSide: BorderSide(color: Colors.blue, width: 1.0)),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color.fromARGB(255, 103, 9, 158), width: 1.0)),
+                    borderSide: BorderSide(color: Colors.blue, width: 1.0)),
                 hintText: 'Username',
-                prefixIcon: Icon(Icons.person,
-                    color: Color.fromARGB(255, 103, 9, 158))),
+                prefixIcon: Icon(Icons.person, color: Colors.blue)),
           ),
           const SizedBox(height: 20.0),
           TextFormField(
@@ -107,14 +103,11 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 border: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color.fromARGB(255, 103, 9, 158), width: 8.0)),
+                    borderSide: BorderSide(color: Colors.blue, width: 8.0)),
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color.fromARGB(255, 103, 9, 158), width: 1.0)),
+                    borderSide: BorderSide(color: Colors.blue, width: 1.0)),
                 hintText: 'Password',
-                prefixIcon: const Icon(Icons.lock,
-                    color: Color.fromARGB(255, 103, 9, 158))),
+                prefixIcon: const Icon(Icons.lock, color: Colors.blue)),
           ),
           const SizedBox(height: 20.0),
           InkWell(
@@ -130,8 +123,8 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               decoration: BoxDecoration(
                   gradient: const LinearGradient(colors: [
-                    Color.fromARGB(255, 196, 65, 223),
-                    Color.fromARGB(255, 103, 9, 158)
+                    Color.fromARGB(255, 7, 79, 235),
+                    Color.fromARGB(255, 51, 13, 218)
                   ]),
                   borderRadius: BorderRadius.circular(100.0)),
               child: const Text('Login',
@@ -139,29 +132,6 @@ class _LoginState extends State<Login> {
                   style: TextStyle(color: Colors.white, fontSize: 20.0)),
             ),
           ),
-          const SizedBox(height: 20.0),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('Belum Punya Akun ? '),
-              const SizedBox(width: 5.0),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Daftar(),
-                      ));
-                },
-                child: const Center(
-                  child: Text('Daftar Sekarang',
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 202, 47, 249))),
-                ),
-              )
-            ],
-          )
         ],
       ),
     ));

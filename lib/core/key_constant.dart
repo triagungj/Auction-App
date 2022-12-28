@@ -1,4 +1,4 @@
-const apiPath = 'http://192.168.0.110';
+const apiPath = 'http://192.168.0.117';
 const imagePath = '$apiPath/lelang/api/image';
 
 const keyIdUserPref = 'id_user';

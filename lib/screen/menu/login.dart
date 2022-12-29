@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:pelelangan/model/service.dart';
-import 'package:pelelangan/screen/menu/daftar.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {

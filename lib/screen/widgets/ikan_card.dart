@@ -15,6 +15,7 @@ class IkanCard extends StatelessWidget {
     required this.nama_ikan,
     required this.tanggal,
     required this.berat,
+    this.onTap,
   });
   final String nama_ikan;
   final String status;
@@ -23,6 +24,7 @@ class IkanCard extends StatelessWidget {
   final String berat;
   final int harga;
   final String tanggal;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +43,7 @@ class IkanCard extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              '/DetailIkan',
-              arguments: no_lelang,
-            );
-          },
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Row(

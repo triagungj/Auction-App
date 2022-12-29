@@ -1,17 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:get/get.dart';
 import 'package:pelelangan/core/key_constant.dart';
-import 'package:pelelangan/model/class_user.dart';
 import 'package:pelelangan/model/user.dart';
 import 'package:pelelangan/screen/menu/daftar.dart';
-import 'package:get_storage/get_storage.dart';
-import 'home.dart';
 import 'package:flutter/material.dart';
-import 'package:pelelangan/screen/menu/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 

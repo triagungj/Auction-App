@@ -62,6 +62,18 @@ class _HomeState extends State<Home> {
                         nama_ikan: isiData[index].nama_ikan,
                         tanggal: isiData[index].tanggal,
                         berat: isiData[index].berat,
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(
+                            '/DetailIkan',
+                            arguments: isiData[index].no_lelang,
+                          )
+                              .then((value) {
+                            setState(() {
+                              getListLelang();
+                            });
+                          });
+                        },
                       ),
                     ),
                   );

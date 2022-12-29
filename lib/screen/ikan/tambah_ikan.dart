@@ -68,7 +68,10 @@ class _TambahIkanState extends State<TambahIkan> {
         filename: path.basename(image!.path),
       );
 
-      request.fields['id_user'] = pref.getString(keyIdUserPref) ?? '';
+      final idUser = pref.getString(keyIdUserPref);
+      if (idUser != null) {
+        request.fields['id_user'] = idUser;
+      }
       request.fields['nama_ikan'] = namaController.text;
       request.fields['berat'] = beratController.text;
       request.fields['harga'] = hargaController.text;
@@ -236,19 +239,21 @@ class _TambahIkanState extends State<TambahIkan> {
               ]),
               borderRadius: BorderRadius.circular(100.0)),
           child: InkWell(
-            onTap: () {
-              if (_formKey.currentState!.validate() && image != null) {
-                tambah();
-              } else if (image == null) {
-                Get.snackbar(
-                  "Gagal",
-                  'Gambar Harus Diisi',
-                  backgroundColor: Colors.red,
-                  colorText: Colors.white,
-                  snackPosition: SnackPosition.TOP,
-                );
-              }
-            },
+            onTap: isLoading
+                ? null
+                : () {
+                    if (_formKey.currentState!.validate() && image != null) {
+                      tambah();
+                    } else if (image == null) {
+                      Get.snackbar(
+                        "Gagal",
+                        'Gambar Harus Diisi',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    }
+                  },
             child: const Text(
               'Simpan',
               textAlign: TextAlign.center,

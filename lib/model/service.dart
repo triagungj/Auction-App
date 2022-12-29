@@ -37,7 +37,7 @@ class LelangService {
     }
   }
 
-  Future<Lelang> detailLelang(String id) async {
+  Future<DetailLelang> detailLelang(String id) async {
     final uri = Uri.parse(
       '$apiPath/lelang/api/lelang_ikan/detail_lelang.php?no_lelang=$id',
     );
@@ -46,7 +46,64 @@ class LelangService {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      return Lelang.fromJson(jsonResponse);
+      return DetailLelang.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<DefaultClass> mulaiLelang(String id) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/mulai_lelang.php',
+    );
+
+    final response = await http.post(uri, body: {
+      'no_lelang': id,
+    });
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return DefaultClass.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<DefaultClass> selesaiLelang(String id) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/selesai_lelang.php',
+    );
+
+    final response = await http.post(uri, body: {
+      'no_lelang': id,
+    });
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return DefaultClass.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<DefaultClass> joinLelang(
+    String idUser,
+    String noLelang,
+    String hargaLelang,
+  ) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/join_lelang.php',
+    );
+
+    final response = await http.post(uri, body: {
+      'no_lelang': noLelang,
+      'id_user': idUser,
+      'harga_lelang': hargaLelang,
+    });
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return DefaultClass.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load data');
     }

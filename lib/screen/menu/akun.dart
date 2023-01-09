@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pelelangan/core/key_constant.dart';
 import 'package:pelelangan/model/service.dart';
 import 'package:pelelangan/model/user.dart';
+import 'package:pelelangan/screen/menu/edit_akun.dart';
+import 'package:pelelangan/screen/widgets/confirm_dialog.dart';
 import 'package:pelelangan/screen/widgets/loading_indator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -59,11 +61,18 @@ class _AkunState extends State<Akun> {
                             children: [
                               akunProfile(
                                 nama: snapshot.data!.username!,
+                                alamat: snapshot.data!.alamat,
+                                nohp: snapshot.data!.no_hp,
+                                avatarUrl: snapshot.data?.avatar,
+                              ),
+                              const SizedBox(height: 20),
+                              editAkun(
+                                idUser: snapshot.data!.id_user!,
+                                nama: snapshot.data!.username!,
                                 alamat: snapshot.data?.alamat,
                                 avatarUrl: snapshot.data?.avatar,
                                 nohp: snapshot.data?.no_hp,
                               ),
-                              const SizedBox(height: 20),
                               logoutButton(),
                             ],
                           );
@@ -102,13 +111,18 @@ class _AkunState extends State<Akun> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 25),
-        CircleAvatar(
-          minRadius: 10,
-          maxRadius: 100,
+        Center(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.network(
-              avatarUrl != null ? '$imagePath/$avatarUrl' : dummyImagePath,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(100),
+            ),
+            child: CircleAvatar(
+              radius: 100,
+              backgroundColor: Colors.grey.shade200,
+              child: Image.network(
+                avatarUrl != null ? '$imagePath/$avatarUrl' : dummyImagePath,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -145,17 +159,59 @@ class _AkunState extends State<Akun> {
     );
   }
 
-  Widget logoutButton() {
+  Widget editAkun({
+    required String idUser,
+    required String nama,
+    String? alamat,
+    String? nohp,
+    String? avatarUrl,
+  }) {
     return ListTile(
-      title: const Text('Logout'),
+      title: const Text('Edit Akun'),
       shape: const RoundedRectangleBorder(
         side: BorderSide(color: Colors.black26),
       ),
       onTap: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.clear();
-        Get.offAllNamed<void>('/Login');
+        Get.to(
+          () => EditAkun(
+            idUser: idUser,
+            nama: nama,
+            alamat: alamat!,
+            noHp: nohp!,
+            avatarUrl: avatarUrl,
+          ),
+        )!
+            .then((value) {
+          setState(() {
+            akunService.fetchAkun();
+          });
+        });
       },
+      trailing: const Icon(Icons.edit),
+    );
+  }
+
+  Widget logoutButton() {
+    return ListTile(
+      title: const Text('Logout'),
+      iconColor: Colors.red,
+      textColor: Colors.red,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(color: Colors.black26),
+      ),
+      onTap: () => Get.dialog(
+        ConfirmDialog(
+          title: 'Logout Akun?',
+          confirmText: 'Logout',
+          onConfirm: () async {
+            {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.clear();
+              Get.offAllNamed<void>('/Login');
+            }
+          },
+        ),
+      ),
       trailing: const Icon(Icons.logout),
     );
   }

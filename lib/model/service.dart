@@ -86,6 +86,23 @@ class LelangService {
     }
   }
 
+  Future<DefaultClass> hapusLelang(String id) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/hapus_lelang.php',
+    );
+
+    final response = await http.post(uri, body: {
+      'no_lelang': id,
+    });
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return DefaultClass.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   Future<DefaultClass> joinLelang(
     String idUser,
     String noLelang,
@@ -104,6 +121,39 @@ class LelangService {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       return DefaultClass.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<RiwayatLelang>> getRiwayat() async {
+    final prefs = await SharedPreferences.getInstance();
+    final idUser = prefs.getString(keyIdUserPref);
+
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/riwayat_lelang.php?id_user=${idUser ?? ''}',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((e) => RiwayatLelang.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<RiwayatLelang> getDetailRiwayat(String noLelang) async {
+    final uri = Uri.parse(
+      '$apiPath/lelang/api/lelang_ikan/riwayat_lelang_detail.php?no_lelang=$noLelang',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return RiwayatLelang.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load data');
     }

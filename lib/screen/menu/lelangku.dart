@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pelelangan/core/key_constant.dart';
 import 'package:pelelangan/model/currency_format.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:pelelangan/model/service.dart';
+import 'package:pelelangan/screen/widgets/confirm_dialog.dart';
 import 'package:pelelangan/screen/widgets/loading_indator.dart';
 import 'package:ribbon_widget/ribbon_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,37 @@ class _LelangkuState extends State<Lelangku> {
     final idUser = prefs.getString(keyIdUserPref);
 
     return lelang.listLelangku(idUser);
+  }
+
+  Future<void> hapusLelang(String noLelang) async {
+    Get.closeAllSnackbars();
+    Get.back();
+    Get.dialog(
+      const LoadingIndicator(),
+      barrierDismissible: false,
+    );
+    final response = await lelang.hapusLelang(noLelang);
+    Get.back();
+    if (response.status == 200) {
+      Get.snackbar(
+        "Berhasil",
+        response.message,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      Get.snackbar(
+        "Gagal",
+        response.message,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+    setState(() {
+      getListLelang();
+    });
   }
 
   @override
@@ -92,10 +125,16 @@ class _LelangkuState extends State<Lelangku> {
                               fontWeight: FontWeight.bold),
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(
+                              Navigator.of(context)
+                                  .pushNamed(
                                 '/DetailIkan',
                                 arguments: isiData[index].no_lelang,
-                              );
+                              )
+                                  .then((value) {
+                                setState(() {
+                                  getListLelang();
+                                });
+                              });
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8),
@@ -112,32 +151,51 @@ class _LelangkuState extends State<Lelangku> {
                                     ),
                                   ),
                                   Expanded(
-                                      child: Container(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 8, left: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${isiData[index].nama_ikan} (${isiData[index].berat} kg)',
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          'Harga Awal: ${CurrencyFormat.convertToIdr(isiData[index].harga, 2)}',
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          'Tanggal: ${isiData[index].tanggal}',
-                                        ),
-                                      ],
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 8, left: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${isiData[index].nama_ikan} (${isiData[index].berat} kg)',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            'Harga Awal: ${CurrencyFormat.convertToIdr(isiData[index].harga, 2)}',
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            'Tanggal: ${isiData[index].tanggal}',
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ))
+                                  ),
+                                  IconButton(
+                                    onPressed: () => Get.dialog(
+                                      ConfirmDialog(
+                                        title: 'Hapus Lelang',
+                                        confirmText: 'Ya, Hapus',
+                                        onConfirm: () {
+                                          hapusLelang(
+                                            isiData[index].no_lelang,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 22,
+                                      color: Colors.red,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

@@ -2,7 +2,6 @@
 
 class Users {
   String? id_user;
-  String? id;
   String? username;
   String? password;
   String? no_hp;
@@ -11,7 +10,6 @@ class Users {
 
   Users({
     this.id_user,
-    this.id,
     this.username,
     this.password,
     this.no_hp,
@@ -21,7 +19,7 @@ class Users {
 
   Users.fromJson(Map<String, dynamic> json) {
     id_user = json['id_user'];
-    id = json['id'];
+
     username = json['username'];
     password = json['password'];
     no_hp = json['no_hp'];
@@ -31,11 +29,9 @@ class Users {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['id_user'] = id_user;
-    data['id'] = id;
     data['username'] = username;
     data['password'] = password;
     data['no_hp'] = no_hp;
-
     data['alamat'] = alamat;
     data['avatar'] = avatar;
     return data;

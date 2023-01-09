@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pelelangan/core/key_constant.dart';
 import 'package:pelelangan/model/currency_format.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:pelelangan/model/service.dart';
+import 'package:pelelangan/screen/ikan/update_lelang.dart';
 import 'package:pelelangan/screen/widgets/lelang_card.dart';
 import 'package:pelelangan/screen/widgets/loading_indator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,8 +22,13 @@ class DetailIkan extends StatefulWidget {
 
 class _DetailIkanState extends State<DetailIkan> {
   final ikan = LelangService();
+  DetailLelang? detailLelang;
+  String? userId;
+
   final hargaController = TextEditingController();
   final isLoading = ValueNotifier<bool>(false);
+  final isEditable = ValueNotifier<bool>(false);
+  bool refreshable = true;
 
   Future<DetailLelang> getDetailLelang() async {
     final response = await ikan.detailLelang(widget.noLelang);
@@ -28,9 +36,45 @@ class _DetailIkanState extends State<DetailIkan> {
     return response;
   }
 
+  Stream<DetailLelang> streamDetailLelang() async* {
+    while (refreshable) {
+      if (detailLelang != null) {
+        await Future.delayed(const Duration(seconds: 5));
+        isLoading.value = true;
+      }
+      detailLelang = await getDetailLelang();
+
+      if (detailLelang!.status == 'selesai') {
+        refreshable = false;
+      }
+
+      userId ??= await getUserId();
+
+      if (detailLelang!.status == 'baru') {
+        if (userId == null && detailLelang!.id_user == null) {
+          isEditable.value = true;
+        } else if (userId != null &&
+            detailLelang!.id_user != null &&
+            userId == detailLelang!.id_user) {
+          isEditable.value = true;
+        } else {
+          isEditable.value = false;
+        }
+      } else {
+        isEditable.value = false;
+      }
+
+      isLoading.value = false;
+
+      yield detailLelang!;
+    }
+  }
+
   Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(keyIdUserPref);
+    userId = prefs.getString(keyIdUserPref);
+
+    return userId;
   }
 
   Future<bool> getPrevilege() async {
@@ -45,7 +89,6 @@ class _DetailIkanState extends State<DetailIkan> {
     );
     final response = await ikan.selesaiLelang(noLelang);
     Get.back();
-
     if (response.status == 200) {
       Get.snackbar(
         "Berhasil",
@@ -63,9 +106,6 @@ class _DetailIkanState extends State<DetailIkan> {
         snackPosition: SnackPosition.TOP,
       );
     }
-    setState(() {
-      getDetailLelang();
-    });
   }
 
   Future<void> memulaiLelang(String noLelang) async {
@@ -75,7 +115,6 @@ class _DetailIkanState extends State<DetailIkan> {
     );
     final response = await ikan.mulaiLelang(noLelang);
     Get.back();
-
     if (response.status == 200) {
       Get.snackbar(
         "Berhasil",
@@ -93,9 +132,6 @@ class _DetailIkanState extends State<DetailIkan> {
         snackPosition: SnackPosition.TOP,
       );
     }
-    setState(() {
-      getDetailLelang();
-    });
   }
 
   Future<void> joinLelang(
@@ -113,7 +149,6 @@ class _DetailIkanState extends State<DetailIkan> {
       harga,
     );
     Get.back();
-
     if (response.status == 200) {
       Get.snackbar(
         "Berhasil",
@@ -131,15 +166,6 @@ class _DetailIkanState extends State<DetailIkan> {
         snackPosition: SnackPosition.TOP,
       );
     }
-    setState(() {
-      getDetailLelang();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isLoading.value = true;
   }
 
   @override
@@ -148,18 +174,31 @@ class _DetailIkanState extends State<DetailIkan> {
       appBar: AppBar(
         title: const Text('Data Ikan'),
         actions: [
-          IconButton(
-            onPressed: () async {
-              setState(() {
-                getDetailLelang();
-              });
+          ValueListenableBuilder(
+            valueListenable: isEditable,
+            builder: (context, value, child) {
+              if (value) {
+                return IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateLelang(
+                          detailLelang: detailLelang!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                );
+              }
+              return const SizedBox();
             },
-            icon: const Icon(Icons.refresh),
           )
         ],
       ),
-      body: FutureBuilder<DetailLelang>(
-        future: getDetailLelang(),
+      body: StreamBuilder<DetailLelang>(
+        stream: streamDetailLelang(),
         builder: (context, snapshot) {
           if (!snapshot.hasData &&
               snapshot.connectionState == ConnectionState.waiting) {
@@ -297,8 +336,16 @@ class _DetailIkanState extends State<DetailIkan> {
                     ),
                   ),
                 ),
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  const LinearProgressIndicator(),
+                ValueListenableBuilder(
+                  valueListenable: isLoading,
+                  builder: (context, value, child) {
+                    if (value) {
+                      return const LinearProgressIndicator();
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
                 FutureBuilder<String?>(
                   future: getUserId(),
                   builder: (context, snapshotUserId) {

@@ -11,16 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pelelangan/core/key_constant.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pelelangan/model/data_class.dart';
 
-class TambahIkan extends StatefulWidget {
-  const TambahIkan({super.key});
+class UpdateLelang extends StatefulWidget {
+  const UpdateLelang({
+    super.key,
+    required this.detailLelang,
+  });
+
+  final DetailLelang detailLelang;
 
   @override
-  State<TambahIkan> createState() => _TambahIkanState();
+  State<UpdateLelang> createState() => _UpdateLelangState();
 }
 
-class _TambahIkanState extends State<TambahIkan> {
+class _UpdateLelangState extends State<UpdateLelang> {
   final _formKey = GlobalKey<FormState>();
 
   File? image;
@@ -56,27 +61,25 @@ class _TambahIkanState extends State<TambahIkan> {
       isLoading = true;
     });
     try {
-      final pref = await SharedPreferences.getInstance();
-      var stream = http.ByteStream(DelegatingStream.typed(image!.openRead()));
-      var lenght = await image!.length();
-      var url = Uri.parse('$apiPath/lelang/api/lelang_ikan/tambah_ikan.php');
+      var url = Uri.parse('$apiPath/lelang/api/lelang_ikan/edit_lelang.php');
       var request = http.MultipartRequest("POST", url);
-      var multipartFile = http.MultipartFile(
-        "image",
-        stream,
-        lenght,
-        filename: path.basename(image!.path),
-      );
-
-      final idUser = pref.getString(keyIdUserPref);
-      if (idUser != null) {
-        request.fields['id_user'] = idUser;
+      if (image != null) {
+        var stream = http.ByteStream(DelegatingStream.typed(image!.openRead()));
+        var length = await image!.length();
+        var multipartFile = http.MultipartFile(
+          "image",
+          stream,
+          length,
+          filename: path.basename(image!.path),
+        );
+        request.files.add(multipartFile);
       }
+
+      request.fields['no_lelang'] = widget.detailLelang.no_lelang;
       request.fields['nama_ikan'] = namaController.text;
       request.fields['berat'] = beratController.text;
       request.fields['harga'] = hargaController.text;
       request.fields['keterangan'] = keteranganController.text;
-      request.files.add(multipartFile);
 
       var response = await request.send();
       response.stream.transform(utf8.decoder).listen((value) {
@@ -111,12 +114,21 @@ class _TambahIkanState extends State<TambahIkan> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    namaController.text = widget.detailLelang.nama_ikan;
+    beratController.text = widget.detailLelang.berat;
+    hargaController.text = widget.detailLelang.harga.toString();
+    keteranganController.text = widget.detailLelang.keterangan;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Jual Ikan"),
+          title: const Text("Edit Data Ikan"),
           centerTitle: true,
         ),
         body: Stack(
@@ -127,7 +139,7 @@ class _TambahIkanState extends State<TambahIkan> {
               children: [
                 const SizedBox(height: 5),
                 const Text(
-                  'Isi Form Data Lelang Ikan',
+                  'Ubah Data Lelang Ikan',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 15),
@@ -209,8 +221,8 @@ class _TambahIkanState extends State<TambahIkan> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         image == null
-                            ? Image.asset(
-                                "assets/img/Placeholder.png",
+                            ? Image.network(
+                                '$imagePath/${widget.detailLelang.gambar}',
                                 fit: BoxFit.fitHeight,
                                 height: 100,
                               )
@@ -227,39 +239,32 @@ class _TambahIkanState extends State<TambahIkan> {
             ),
           ],
         ),
-        bottomNavigationBar: isLoading
-            ? null
-            : Container(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [
-                      Color.fromARGB(255, 65, 165, 223),
-                      Color.fromARGB(255, 9, 24, 158)
-                    ]),
-                    borderRadius: BorderRadius.circular(100.0)),
-                child: InkWell(
-                  onTap: () {
-                    if (_formKey.currentState!.validate() && image != null) {
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Container(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [
+                Color.fromARGB(255, 65, 165, 223),
+                Color.fromARGB(255, 9, 24, 158)
+              ]),
+              borderRadius: BorderRadius.circular(100.0)),
+          child: InkWell(
+            onTap: isLoading
+                ? null
+                : () {
+                    if (_formKey.currentState!.validate()) {
                       tambah();
-                    } else if (image == null) {
-                      Get.snackbar(
-                        "Gagal",
-                        'Gambar Harus Diisi',
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                        snackPosition: SnackPosition.TOP,
-                      );
                     }
                   },
-                  child: const Text(
-                    'Simpan',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                ),
-              ),
+            child: const Text(
+              'Simpan',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
+          ),
+        ),
       ),
     );
   }

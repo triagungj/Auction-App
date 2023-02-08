@@ -141,7 +141,7 @@ class RiwayatLelang {
       nama_pemilik: json['nama_pemilik'],
       id_pelelang: json['id_pelelang'],
       nama_pelelang: json['nama_pelelang'],
-      harga_terakhir: json['harga_terakhir'],
+      harga_terakhir: json['harga_terakhir!'],
       tanggal: json['tanggal'],
       gambar: json['gambar'],
       keterangan: json['keterangan'],

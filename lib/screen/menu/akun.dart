@@ -61,6 +61,7 @@ class _AkunState extends State<Akun> {
                             children: [
                               akunProfile(
                                 nama: snapshot.data!.username!,
+                                password: snapshot.data!.password!,
                                 alamat: snapshot.data!.alamat,
                                 nohp: snapshot.data!.no_hp,
                                 avatarUrl: snapshot.data?.avatar,
@@ -69,6 +70,7 @@ class _AkunState extends State<Akun> {
                               editAkun(
                                 idUser: snapshot.data!.id_user!,
                                 nama: snapshot.data!.username!,
+                                password: snapshot.data!.password!,
                                 alamat: snapshot.data?.alamat,
                                 avatarUrl: snapshot.data?.avatar,
                                 nohp: snapshot.data?.no_hp,
@@ -104,6 +106,7 @@ class _AkunState extends State<Akun> {
   Widget akunProfile({
     required String nama,
     String? alamat,
+    String? password,
     String? nohp,
     String? avatarUrl,
   }) {
@@ -162,6 +165,7 @@ class _AkunState extends State<Akun> {
   Widget editAkun({
     required String idUser,
     required String nama,
+    required String password,
     String? alamat,
     String? nohp,
     String? avatarUrl,
@@ -176,6 +180,7 @@ class _AkunState extends State<Akun> {
           () => EditAkun(
             idUser: idUser,
             nama: nama,
+            password: password,
             alamat: alamat!,
             noHp: nohp!,
             avatarUrl: avatarUrl,
@@ -207,7 +212,7 @@ class _AkunState extends State<Akun> {
             {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.clear();
-              Get.offAllNamed<void>('/Login');
+              Get.offAllNamed<void>('/Menu');
             }
           },
         ),

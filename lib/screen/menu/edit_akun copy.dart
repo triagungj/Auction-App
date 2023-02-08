@@ -11,14 +11,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pelelangan/core/key_constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditAkun extends StatefulWidget {
   const EditAkun({
     super.key,
     required this.idUser,
     required this.nama,
-    required this.password,
     required this.noHp,
     required this.alamat,
     this.avatarUrl,
@@ -26,7 +24,6 @@ class EditAkun extends StatefulWidget {
 
   final String idUser;
   final String nama;
-  final String password;
   final String noHp;
   final String alamat;
   final String? avatarUrl;
@@ -39,7 +36,6 @@ class _EditAkunState extends State<EditAkun> {
   final _formKey = GlobalKey<FormState>();
 
   final namaController = TextEditingController();
-  final passwordController = TextEditingController();
   final noHpController = TextEditingController();
   final alamatController = TextEditingController();
   File? _image;
@@ -63,9 +59,7 @@ class _EditAkunState extends State<EditAkun> {
       isLoading = true;
     });
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final id = prefs.getString(keyIdUserPref);
-      var url = Uri.parse('$apiPath/lelang/api/user/edit_akun.php?id_user=$id');
+      var url = Uri.parse('$apiPath/lelang/api/user/edit_akun.php');
       var request = http.MultipartRequest("POST", url);
       if (_image != null) {
         var stream =
@@ -82,7 +76,6 @@ class _EditAkunState extends State<EditAkun> {
 
       request.fields['id_user'] = widget.idUser;
       request.fields['username'] = namaController.text;
-      request.fields['password'] = passwordController.text;
       request.fields['no_hp'] = noHpController.text;
       request.fields['alamat'] = alamatController.text;
 
@@ -123,7 +116,6 @@ class _EditAkunState extends State<EditAkun> {
   void initState() {
     super.initState();
     namaController.text = widget.nama;
-    // passwordController.text = widget.password;
     noHpController.text = widget.noHp;
     alamatController.text = widget.alamat;
   }
@@ -191,19 +183,6 @@ class _EditAkunState extends State<EditAkun> {
                 keyboardType: TextInputType.multiline,
                 decoration: const InputDecoration(
                   labelText: 'Nama',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color.fromARGB(255, 103, 9, 158), width: 1.0),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: passwordController,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  labelText: 'password',
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(

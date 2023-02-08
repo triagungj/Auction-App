@@ -1,4 +1,4 @@
-const apiPath = 'http://192.168.0.117';
+const apiPath = 'http://www.tpibanyutowo.xyz';
 const imagePath = '$apiPath/lelang/api/image';
 
 const keyIdUserPref = 'id_user';

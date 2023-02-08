@@ -178,6 +178,10 @@ class _LelangkuState extends State<Lelangku> {
                                       ),
                                     ),
                                   ),
+                                  // if(isiData[index].status== 'selesai')
+                                  //   Text(''),
+                                  // elseif (isiData[index].status== 'baru'),
+
                                   IconButton(
                                     onPressed: () => Get.dialog(
                                       ConfirmDialog(

@@ -33,7 +33,8 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              initialRoute: snapshot.data! ? '/Menu' : '/Login',
+              initialRoute: '/Menu',
+              // initialRoute: snapshot.data! ? '/Menu' : '/Login',
               routes: {
                 '/Login': (context) => const Login(),
                 '/Menu': (context) => Menu(

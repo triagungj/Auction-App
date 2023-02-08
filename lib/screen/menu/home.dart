@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pelelangan/model/data_class.dart';
 import 'package:pelelangan/model/service.dart';
 import 'package:pelelangan/screen/widgets/ikan_card.dart';
@@ -21,7 +22,17 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lelang')),
+      appBar: AppBar(
+        title: const Text('Lelang'),
+        actions: <Widget>[
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/Login');
+            },
+            child: Icon(Icons.login),
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
